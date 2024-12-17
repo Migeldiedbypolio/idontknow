@@ -16,6 +16,25 @@
             overflow: hidden;
             position: relative;
         }
+        .mobile {
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            background-color: aquamarine;
+            color: crimson;
+            z-index: 9999;
+            max-width: 400px;
+            width: 40px;
+        }
+        .mobile p {
+            box-shadow: 0 0 5px paleturquoise;
+            text-shadow: 0 0 2px white;
+        }
+        body.no-scroll {
+            overflow: hidden;
+        }
         .heart {
             position: relative;
             width: 70px;
@@ -245,5 +264,19 @@
     </audio>
     <div class="heart"></div>
     <div class="snowfall"></div>
+    <div class="mobile">
+        <p>Please visit from a Desktop environment</p>
+        <p>Thank You!</p>
+    </div>
+    <script>
+        function checkChapri() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+        if (checkChapri()) {
+            document.querySelector('.content').style.display = 'none';
+            document.querySelector('.mobile').style.display = 'block';
+            document.body.classList.add('no-scroll');
+        }
+    </script>
 </body>
 </html>
