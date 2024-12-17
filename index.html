@@ -245,14 +245,21 @@
     </audio>
     <div class="heart"></div>
     <div class="snowfall"></div>
+    <div class="mobile">
     </div>
     <script>
         function checkChapri() {
-            return (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent) && window.innerWidth > 768)
+          const userAgent = navigator.userAgent.toLowerCase();
+          return (userAgent.indexOf("android") > -1 || userAgent.indexOf("iphone") > -1 || userAgent.indexOf("ipad") > -1);
         }
-        if (checkChapri()) {
-            window.location.href = "mobile.html";
+      
+        function redirectIfChapri() {
+          if (checkChapri()) {
+            window.location.href = "mobile.html"; // Redirect to mobile.html if Android or iOS is detected
+          }
         }
-    </script>
+      
+        window.onload = redirectIfChapri;
+      </script>      
 </body>
 </html>
