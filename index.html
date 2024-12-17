@@ -6,53 +6,24 @@
     <title>Chapri Figure</title>
     <style>
         body {
-            margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            background: #000;
-            position: relative;
+            cursor: url("items/cursor.cur"), auto !important;
+            background-color: black;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-        .stars div {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 5px cyan, 0 0 10px cyan, 0 0 15px cyan;
-            animation: twinkle 2s infinite, moveStars 10s linear infinite;
-        }
-        @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-        @keyframes moveStars {
-            0% {
-                transform: translateX(0) translateY(0);
-            }
-            100% {
-                transform: translateX(100vw) translateY(100vh);
-            }
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
         .heart {
             position: relative;
-            width: 100px;
-            height: 100px;
+            width: 70px;
+            height: 70px;
+            background: palevioletred;
             background-color: transparent;
-            animation: draw 10s forwards;
-            transition: all 0.6s ease-in-out;
+            animation: draw forwards;
+            transition: all 0.2s ease-in-out;
             z-index: 2;
         }
         .heart::before,
@@ -63,9 +34,9 @@
             width: 50px;
             height: 80px;
             border-radius: 100px 100px 0 0;
-            background: red;
-            box-shadow: 0 0 20px red;
-            animation: glow 10s forwards;;
+            background: palevioletred;
+            box-shadow: 0 0 20px palevioletred;
+            animation: glow 0.4s forwards;
         }
         .heart::before {
             left: 50px;
@@ -76,47 +47,203 @@
             left: 0;
             transform: rotate(45deg);
             transform-origin: 100% 100%;
-            box-shadow: 0 0 20px red, 0 0 2 20px red;
+            box-shadow: 0 0 20px palevioletred, 0 0 2 20px palevioletred;
         }
         .heart:hover {
+            background: red;
             filter: drop-shadow(1px 1px 20px red);
-            transition: all 1s ease-in-out;
+            cursor: url("items/rose.cur"), auto !important;
+        }
+        .heart:hover::before,
+        .heart:hover::after {
+            background-color: red;
+            box-shadow: 0 0 5px red, 0 0 10px red;/*, 0 0 20px red, 0 0 25px red, 0 0 30px red;*/
+            animation: ease-in-out;
         }
         @keyframes draw {
             0% {
                 opacity: 0;
             }
             100% {
+                background: transparent;
                 opacity: 1;
             }
         }
         @keyframes glow {
             0% {
-                box-shadow: 0 0 20px red;
+                box-shadow: 0 0 5px palevioletred;
+            }
+            30% {
+                box-shadow: 0 0 10px palevioletred;
+            }
+            50% {
+                box-shadow: 0 0 20px palevioletred;
+            }
+            70% {
+                box-shadow: 0 0 25px palevioletred;
             }
             100% {
-                box-shadow: 0 0 0 red;
+                box-shadow: 0 0 30px palevioletred;
+            }
+        }
+        .trail {
+            position: absolute;
+            background: pink;
+            pointer-events: none;
+            width: 0;
+            border-radius: 50%;
+            animation: trail-animation 0.4s forwards;
+            box-shadow: 0 0 1px paleturquoise; 
+        }
+        @keyframes trail-animation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+        @keyframes star-explosion {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+                box-shadow: 0 0 20px paleturquoise;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+                box-shadow: 0 0 50px paleturquoise;
+            }
+        }
+        .star {
+            position: absolute;
+            background-color: paleturquoise;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: star-explosion 0.8s forwards;
+        }
+        .snowfall {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            box-shadow: 0 0 5px white, 0 0 25px paleturquoise;
+            z-index: 0;
+        }
+        .snowflake {
+            position: absolute;
+            top: -5px;
+            background: paleturquoise;
+            opacity: 0.8;
+            border-radius: 50%;
+            box-shadow: 0 0 5px paleturquoise, 0 0 25px paleturquoise;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
             }
         }
     </style>
 </head>
+<script>
+    document.addEventListener("contextmenu", () => {event.preventDefault();});
+    window.addEventListener("blur", () => {document.title = "Yo!";});
+    window.addEventListener("focus", () => {document.title = "Noob Site";});
+    let trailPoints = [];
+    let trailTimeout;
+    document.addEventListener("mousemove", (e) => {
+        trailPoints.push({x: e.pageX, y: e.pageY});
+        if (trailPoints.length > 1) {
+            const lastPoint = trailPoints[trailPoints.length - 2];
+            const currentPoint = trailPoints[trailPoints.length - 1];
+            const distance = Math.sqrt(Math.pow(currentPoint.x - lastPoint.x, 2) + Math.pow(currentPoint.y - lastPoint.y, 2));
+            const trailSize = Math.min(8, distance / 3);
+            drawLine(lastPoint, currentPoint, trailSize);
+        }
+        clearTimeout(trailTimeout);
+        trailTimeout = setTimeout(() => {
+            trailPoints.shift();
+        }, 100);
+    });
+    function drawLine(point1, point2, trailSize) {
+        const line = document.createElement("div");
+        const distance = Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
+        const lineThickness = Math.min(2, trailSize);
+        line.style.position = "absolute";
+        line.style.backgroundColor = "pink";        
+        line.style.width = `${distance}px`;
+        line.style.height = `${lineThickness}px`;
+        line.style.transformOrigin = "0 0";
+        line.style.transform = `rotate(${Math.atan2(point2.y - point1.y, point2.x - point1.x)}rad)`;
+        line.style.left = `${point1.x}px`;
+        line.style.top = `${point1.y}px`;
+        line.style.boxShadow = "0 0 5px paleturquoise";
+        document.body.appendChild(line);
+        setTimeout(() => {
+            line.remove();
+        }, 600);
+    }
+
+    document.addEventListener("click", (e) => {
+        let starEffect = document.createElement("div");
+        starEffect.style.left = `${e.pageX - 10}px`; 
+        starEffect.style.top = `${e.pageY - 10}px`;
+        starEffect.classList.add("star");
+        document.body.appendChild(starEffect);
+        setTimeout(() => {
+            starEffect.remove();
+        }, 800); 
+    });
+
+    document.addEventListener("touchstart", (e) => {
+        let starEffect = document.createElement("div");
+        starEffect.style.left = `${e.touches[0].pageX - 10}px`;
+        starEffect.style.top = `${e.touches[0].pageY - 10}px`;
+        starEffect.classList.add("star");
+        document.body.appendChild(starEffect);
+        setTimeout(() => {
+            starEffect.remove();
+        }, 800); 
+    });
+
+    function createSnowflakes(count) {
+        const snowfall = document.querySelector('.snowfall');
+        for (let i = 0; i < count; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const size = 5;
+            const leftPosition = Math.random() * 100;
+            const duration = Math.random() * 8 + 5;
+            const delay = Math.random() * 3;
+
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${leftPosition}vw`;
+            snowflake.style.animationDuration = `${duration}s`;
+            snowflake.style.animationDelay = `${delay}s`;
+
+            snowfall.appendChild(snowflake);
+        }
+    }
+    window.onload = function() {
+        createSnowflakes(100);
+    }
+</script>
 <body>
-    <div class="stars">
-        <script>
-            const starContainer = document.querySelector('.stars');
-            for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.top = `${Math.random() * 100}vh`;
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                starContainer.appendChild(star);
-            }
-        </script>
-    </div>
+    <audio autoplay>
+        <source src="items/theme.mp3" type="audio/mp3">
+    </audio>
     <div class="heart"></div>
+    <div class="snowfall"></div>
 </body>
 </html>
-
