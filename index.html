@@ -248,7 +248,7 @@
     </div>
     <script>
         function checkChapri() {
-            return /Mobi|Android/i.test(navigator.userAgent);
+            return (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent) && window.innerWidth > 768)
         }
         if (checkChapri()) {
             window.location.href = "mobile.html";
