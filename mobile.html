@@ -97,18 +97,30 @@
     <button id="speakBtn">Press Me</button>
   </div>
   <script>
+    let voices = [];
+    function loadVoices() {
+      voices = window.speechSynthesis.getVoices();
+      if (voices.length === 0) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+      }
+    }
+    loadVoices();
     function check() {
       if (!('speechSynthesis' in window)) {
-        alert("You cannot use this feature cuz your browser doesn't support this.");
+        alert("You cannot use this feature cuz your browser doesn't support it.");
         return;
+      }
+      const text = document.getElementById("input").value.trim();
+      if (text === ""){
+        text = "Yo Queen please come back in Desktop."
+      }
+      const chapri = new SpeechSynthesisUtterance(text);
+      const selectedVoice = voices.find(voice => voice.name === 'Google UK English Female');
+      if (selectedVoice) {
+        chapri.voice = selectedVoice;
+      }
+      window.speechSynthesis.speak(chapri);
     }
-    var text = document.getElementById("input").value;
-    if (text === ""){
-      text = "Yo..... Queen please come back in Desk Top"; 
-    }
-    var chapri = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(chapri);
-  }
     document.getElementById("speakBtn").addEventListener("click", check);
   </script>
 </body>
