@@ -82,6 +82,11 @@
     }
   </style>
 </head>
+<script>
+    document.addEventListener("contextmenu", () => {event.preventDefault();});
+    window.addEventListener("blur", () => {document.title = "Dont Forget!";});
+    window.addEventListener("focus", () => {document.title = "Yo ♕";});
+</script>
 <body>
   <div class="content">
     <h1>Yo <span class="myQueen">♕</span></h1>
@@ -98,6 +103,9 @@
         return;
     }
     var text = document.getElementById("input").value;
+    if (text == ""){
+      text = "Yo Queen please come back in Desktop"; 
+    }
     var chapri = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(chapri);
   }
