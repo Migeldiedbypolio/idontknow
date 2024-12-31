@@ -50,16 +50,21 @@
     </style>
 </head>
     <script>
-    function checkChapri() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const isMobile = /mobile|android|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
-        const isScreenWide = window.innerWidth > 1024;
-        return !isMobile && isScreenWide;
+        function redirectChapriTo(url){
+            setTimeout(function() {
+                window.location.href = url;
+            }, 1000);
+        }
+        function checkChapri() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isMobile = /mobile|android|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
+            const isScreenWide = window.innerWidth > 1024;
+            return !isMobile && isScreenWide;
         }
     if (checkChapri()) {
-        window.location.href = 'main.html';
+        redirectChapriTo("main.html");
     } else {
-        window.location.href = 'mobile.html';
+        redirectChapriTo("mobile.html");
     }
     </script>
 <body>
