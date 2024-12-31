@@ -50,19 +50,17 @@
     </style>
 </head>
     <script>
-        function checkChapri() {
-          const userAgent = navigator.userAgent.toLowerCase();
-          return (userAgent.indexOf("android") > -1 || userAgent.indexOf("iphone") > -1 || userAgent.indexOf("ipad") > -1);
+    function checkChapri() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isMobile = /mobile|android|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
+        const isScreenWide = window.innerWidth > 1024;
+        return !isMobile && isScreenWide;
         }
-        function redirectIfChapri() {
-          if (checkChapri()) {
-            setTimeout(() => window.location.href = "mobile.html", 1000) 
-          }
-          else{
-            setTimeout(() => window.location.href = "main.html", 200)
-          }
-        }
-        window.onload = redirectIfChapri;
+    if (checkChapri()) {
+        window.location.href = 'main.html';
+    } else {
+        window.location.href = 'mobile.html';
+    }
     </script>
 <body>
     <div class="greeting">Yo</div>
